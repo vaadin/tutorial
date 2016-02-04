@@ -8,11 +8,16 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  *
@@ -23,24 +28,42 @@ public class MyUI extends UI {
 
 	private CustomerService service = CustomerService.getInstance();
 	private Grid grid = new Grid();
+	private TextField filterText = new TextField();
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		final VerticalLayout layout = new VerticalLayout();
 
+		filterText.setInputPrompt("filter by name...");
+		filterText.addTextChangeListener(e -> {
+			grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, service.findAll(e.getText())));
+		});
+		
+		Button clearFilterTextBtn = new Button(FontAwesome.TIMES);
+		clearFilterTextBtn.setDescription("Clear the current filter");
+		clearFilterTextBtn.addClickListener(e -> {
+		  filterText.clear();
+		  updateList();
+		});
+		
+		CssLayout filtering = new CssLayout();
+		filtering.addComponents(filterText, clearFilterTextBtn);
+		filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
 		grid.setColumns("firstName", "lastName", "email");
 		// add Grid to the layout
-		layout.addComponent(grid);
+		layout.addComponents(filtering, grid);
 
 		updateList();
 
 		layout.setMargin(true);
+		layout.setSpacing(true);
 		setContent(layout);
 	}
 
 	public void updateList() {
 		// fetch list of Customers from service and assign it to Grid
-		List<Customer> customers = service.findAll();
+		List<Customer> customers = service.findAll(filterText.getValue());
 		grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
 	}
 
