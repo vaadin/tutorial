@@ -1,8 +1,20 @@
-app
+Vaadin Tutorial application
 ==============
 
-Template for a simple Vaadin application that only requires a Servlet 3.0 container to run.
+**This repository contains the source code of the application built in [Vaadin Framework tutorial](http://vaadin.com/tutorial).**
 
+If you are new to Maven, read [these instructions](https://vaadin.com/blog/-/blogs/the-maven-essentials-for-the-impatient-developer) to get your project properly imported into Eclipse or your IDE of choice.
+
+If you want to start the tutorial from a specific step, use the following tags to checkout the project after the previous one:
+
+ 1. [Creating a project using an archetype](https://github.com/vaadin/tutorial/tree/step1)
+ 2. [Adding a demo "backend"](https://github.com/vaadin/tutorial/tree/step2)
+ 3. [Listing entities in a Grid](https://github.com/vaadin/tutorial/tree/step3))
+ 4. [Creating live filtering for entities](https://github.com/vaadin/tutorial/tree/step4)
+ 5. [Creating a form to edit Customer objects](https://github.com/vaadin/tutorial/tree/step))
+ 6. [Connecting the form to the application](https://github.com/vaadin/tutorial/tree/step6))
+
+Below are some instructions how to work with basic Vaadin application.
 
 Workflow
 ========
