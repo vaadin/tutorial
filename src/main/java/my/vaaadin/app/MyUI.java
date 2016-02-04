@@ -40,17 +40,26 @@ public class MyUI extends UI {
 		filterText.addTextChangeListener(e -> {
 			grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, service.findAll(e.getText())));
 		});
-		
+
 		Button clearFilterTextBtn = new Button(FontAwesome.TIMES);
 		clearFilterTextBtn.setDescription("Clear the current filter");
 		clearFilterTextBtn.addClickListener(e -> {
-		  filterText.clear();
-		  updateList();
+			filterText.clear();
+			updateList();
 		});
-		
+
 		CssLayout filtering = new CssLayout();
 		filtering.addComponents(filterText, clearFilterTextBtn);
 		filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+		Button addCustomerBtn = new Button("Add new customer");
+		addCustomerBtn.addClickListener(e -> {
+			grid.select(null);
+			form.setCustomer(new Customer());
+		});
+
+		HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
+		toolbar.setSpacing(true);
 
 		grid.setColumns("firstName", "lastName", "email");
 
@@ -60,13 +69,25 @@ public class MyUI extends UI {
 		grid.setSizeFull();
 		main.setExpandRatio(grid, 1);
 
-		layout.addComponents(filtering, main);
+		layout.addComponents(toolbar, main);
 
 		updateList();
 
 		layout.setMargin(true);
 		layout.setSpacing(true);
 		setContent(layout);
+
+		form.setVisible(false);
+
+		grid.addSelectionListener(event -> {
+			if (event.getSelected().isEmpty()) {
+				form.setVisible(false);
+			} else {
+				Customer customer = (Customer) event.getSelected().iterator().next();
+				form.setCustomer(customer);
+			}
+		});
+
 	}
 
 	public void updateList() {
