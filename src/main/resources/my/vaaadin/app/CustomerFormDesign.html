@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;mytheme&quot;}">
+ </head> 
+ <body> 
+  <vaadin-form-layout width="535px" margin-left="true" margin-top="false" margin-bottom="false"> 
+   <vaadin-horizontal-layout caption="Name" primary-style-name="v-horizontallayout" spacing="true"> 
+    <vaadin-text-field input-prompt="First" width="135px" _id="firstName"></vaadin-text-field> 
+    <vaadin-text-field input-prompt="Last" width="276px" _id="lastName"></vaadin-text-field> 
+   </vaadin-horizontal-layout> 
+   <vaadin-text-field caption="Email" width-full="true" _id="email"></vaadin-text-field> 
+   <vaadin-native-select caption="Status" item-caption-mode="id" width="163px" _id="status"></vaadin-native-select> 
+   <vaadin-popup-date-field caption="Birthday" _id="birthDate"></vaadin-popup-date-field> 
+   <vaadin-horizontal-layout primary-style-name="v-horizontallayout" spacing="true"> 
+    <vaadin-button style-name="primary" plain-text="" _id="save">
+      Save 
+    </vaadin-button> 
+    <vaadin-button style-name="danger" plain-text="" _id="delete">
+      Delete 
+    </vaadin-button> 
+   </vaadin-horizontal-layout> 
+  </vaadin-form-layout>  
+ </body>
+</html>
