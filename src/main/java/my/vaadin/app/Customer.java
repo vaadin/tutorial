@@ -1,4 +1,4 @@
-package my.vaaadin.app;
+package my.vaadin.app;
 
 import java.io.Serializable;
 import java.util.Date;

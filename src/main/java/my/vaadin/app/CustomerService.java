@@ -1,4 +1,4 @@
-package my.vaaadin.app;
+package my.vaadin.app;
 
 import java.util.ArrayList;
 import java.util.Calendar;

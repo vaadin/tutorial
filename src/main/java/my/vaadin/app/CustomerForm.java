@@ -1,4 +1,4 @@
-package my.vaaadin.app;
+package my.vaadin.app;
 
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.event.ShortcutAction.KeyCode;
