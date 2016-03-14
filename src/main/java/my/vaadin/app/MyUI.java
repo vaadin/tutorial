@@ -24,7 +24,7 @@ import com.vaadin.ui.themes.ValoTheme;
  *
  */
 @Theme("mytheme")
-@Widgetset("my.vaaadin.app.MyAppWidgetset")
+@Widgetset("my.vaadin.app.MyAppWidgetset")
 public class MyUI extends UI {
 
 	private CustomerService service = CustomerService.getInstance();
