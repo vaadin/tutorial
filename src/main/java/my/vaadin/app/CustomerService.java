@@ -31,7 +31,7 @@ public class CustomerService {
 	/**
 	 * @return a reference to an example facade for Customer objects.
 	 */
-	static CustomerService getInstance() {
+	public static CustomerService getInstance() {
 		if (instance == null) {
 			instance = new CustomerService();
 			instance.ensureTestData();
