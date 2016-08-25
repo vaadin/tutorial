@@ -48,6 +48,15 @@ public class MyUI extends UI {
         filtering.addComponents(filterText, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
+        Button addCustomerBtn = new Button("Add new customer");
+        addCustomerBtn.addClickListener(e -> {
+            grid.select(null);
+            form.setCustomer(new Customer());
+        });
+
+        HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
+        toolbar.setSpacing(true);
+
         grid.setColumns("firstName", "lastName", "email");
 
         HorizontalLayout main = new HorizontalLayout(grid, form);
@@ -56,13 +65,24 @@ public class MyUI extends UI {
         grid.setSizeFull();
         main.setExpandRatio(grid, 1);
 
-        layout.addComponents(filtering, main);
+        layout.addComponents(toolbar, main);
 
         updateList();
 
         layout.setMargin(true);
         layout.setSpacing(true);
         setContent(layout);
+
+        form.setVisible(false);
+
+        grid.addSelectionListener(event -> {
+            if (event.getSelected().isEmpty()) {
+                form.setVisible(false);
+            } else {
+                Customer customer = (Customer) event.getSelected().iterator().next();
+                form.setCustomer(customer);
+            }
+        });
     }
 
     public void updateList() {
