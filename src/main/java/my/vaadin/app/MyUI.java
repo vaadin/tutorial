@@ -4,13 +4,12 @@ import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
+
+import java.util.List;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window
@@ -22,24 +21,27 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 public class MyUI extends UI {
 
+    private CustomerService service = CustomerService.getInstance();
+    private Grid grid = new Grid();
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
 
-        final TextField name = new TextField();
-        name.setCaption("Type your name here:");
+        grid.setColumns("firstName", "lastName", "email");
+        // add Grid to the layout
+        layout.addComponents(grid);
 
-        Button button = new Button("Click Me");
-        button.addClickListener( e -> {
-            layout.addComponent(new Label("Thanks " + name.getValue()
-                    + ", it works!"));
-        });
+        updateList();
 
-        layout.addComponents(name, button);
         layout.setMargin(true);
-        layout.setSpacing(true);
-
         setContent(layout);
+    }
+
+    public void updateList() {
+        // fetch list of Customers from service and assign it to Grid
+        List<Customer> customers = service.findAll();
+        grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
