@@ -50,6 +50,14 @@ public class MyUI extends UI {
         filtering.addComponents(filterText, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
+        Button addCustomerBtn = new Button("Add new customer");
+        addCustomerBtn.addClickListener(e -> {
+            grid.asSingleSelect().clear();
+            form.setCustomer(new Customer());
+        });
+
+        HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
+
         grid.addColumn(Customer::getFirstName).setCaption("First Name");
         grid.addColumn(Customer::getLastName).setCaption("Last Name");
         grid.addColumn(Customer::getEmail).setCaption("Email");
@@ -59,12 +67,22 @@ public class MyUI extends UI {
         grid.setSizeFull();
         main.setExpandRatio(grid, 1);
 
-        layout.addComponents(filtering, main);
+        layout.addComponents(toolbar, main);
 
         // fetch list of Customers from service and assign it to Grid
         updateList();
 
         setContent(layout);
+
+        form.setVisible(false);
+
+        grid.asSingleSelect().addValueChangeListener(event -> {
+            if (event.getValue() == null) {
+                form.setVisible(false);
+            } else {
+                form.setCustomer(event.getValue());
+            }
+        });
     }
 
     public void updateList() {
