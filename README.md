@@ -10,10 +10,10 @@ If you want to start the tutorial from a specific step, use the following links 
  1. Overview (no source code available in this step).
  2. Creating a project using an archetype (no source code available before this step).
  3. [Adding a demo "backend"](https://github.com/vaadin/tutorial/tree/v8-step2)
- 4. [Listing entities in a Grid](https://github.com/vaadin/tutorial/tree/v8-step3))
+ 4. [Listing entities in a Grid](https://github.com/vaadin/tutorial/tree/v8-step3)
  5. [Creating live filtering for entities](https://github.com/vaadin/tutorial/tree/v8-step4)
- 6. [Creating a form to edit Customer objects](https://github.com/vaadin/tutorial/tree/v8-step5))
- 7. [Connecting the form to the application](https://github.com/vaadin/tutorial/tree/v8-step6))
+ 6. [Creating a form to edit Customer objects](https://github.com/vaadin/tutorial/tree/v8-step5)
+ 7. [Connecting the form to the application](https://github.com/vaadin/tutorial/tree/v8-step6)
 
 Below are some instructions how to work with basic Vaadin application.
 
