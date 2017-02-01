@@ -1,6 +1,6 @@
 package my.vaadin.app;
 
-import com.vaadin.data.BeanBinder;
+import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
@@ -23,7 +23,7 @@ public class CustomerForm extends FormLayout {
     private CustomerService service = CustomerService.getInstance();
     private Customer customer;
     private MyUI myUI;
-    private BeanBinder<Customer> beanBinder = new BeanBinder<>(Customer.class);
+    private Binder<Customer> beanBinder = new Binder<>(Customer.class);
 
     public CustomerForm(MyUI myUI) {
         this.myUI = myUI;
