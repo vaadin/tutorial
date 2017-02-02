@@ -23,7 +23,7 @@ public class CustomerForm extends FormLayout {
     private CustomerService service = CustomerService.getInstance();
     private Customer customer;
     private MyUI myUI;
-    private Binder<Customer> beanBinder = new Binder<>(Customer.class);
+    private Binder<Customer> binder = new Binder<>(Customer.class);
 
     public CustomerForm(MyUI myUI) {
         this.myUI = myUI;
@@ -36,7 +36,7 @@ public class CustomerForm extends FormLayout {
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(KeyCode.ENTER);
 
-        beanBinder.bindInstanceFields(this);
+        binder.bindInstanceFields(this);
 
         save.addClickListener(e -> this.save());
         delete.addClickListener(e -> this.delete());
@@ -44,7 +44,7 @@ public class CustomerForm extends FormLayout {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-        beanBinder.setBean(customer);
+        binder.setBean(customer);
 
         // Show delete button for only customers already in the database
         delete.setVisible(customer.isPersisted());
