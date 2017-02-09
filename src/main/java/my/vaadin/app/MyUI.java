@@ -29,7 +29,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class MyUI extends UI {
     
     private CustomerService service = CustomerService.getInstance();
-    private Grid<Customer> grid = new Grid<>();
+    private Grid<Customer> grid = new Grid<>(Customer.class);
     private TextField filterText = new TextField();
 
     @Override
@@ -48,9 +48,7 @@ public class MyUI extends UI {
         filtering.addComponents(filterText, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        grid.addColumn(Customer::getFirstName).setCaption("First Name");
-        grid.addColumn(Customer::getLastName).setCaption("Last Name");
-        grid.addColumn(Customer::getEmail).setCaption("Email");
+        grid.setColumns("firstName", "lastName", "email");
 
         // add filtering and Grid components to the layout
         layout.addComponents(filtering, grid);
