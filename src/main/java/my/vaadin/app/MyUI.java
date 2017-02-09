@@ -30,7 +30,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class MyUI extends UI {
     
     private CustomerService service = CustomerService.getInstance();
-    private Grid<Customer> grid = new Grid<>();
+    private Grid<Customer> grid = new Grid<>(Customer.class);
     private TextField filterText = new TextField();
     private CustomerForm form = new CustomerForm(this);
 
@@ -58,9 +58,7 @@ public class MyUI extends UI {
 
         HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
 
-        grid.addColumn(Customer::getFirstName).setCaption("First Name");
-        grid.addColumn(Customer::getLastName).setCaption("Last Name");
-        grid.addColumn(Customer::getEmail).setCaption("Email");
+        grid.setColumns("firstName", "lastName", "email");
 
         HorizontalLayout main = new HorizontalLayout(grid, form);
         main.setSizeFull();
