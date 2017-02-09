@@ -23,15 +23,13 @@ import com.vaadin.ui.VerticalLayout;
 public class MyUI extends UI {
     
     private CustomerService service = CustomerService.getInstance();
-    private Grid<Customer> grid = new Grid<>();
+    private Grid<Customer> grid = new Grid<>(Customer.class);
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
 
-        grid.addColumn(Customer::getFirstName).setCaption("First Name");
-        grid.addColumn(Customer::getLastName).setCaption("Last Name");
-        grid.addColumn(Customer::getEmail).setCaption("Email");
+        grid.setColumns("firstName", "lastName", "email");
 
         // add Grid to the layout
         layout.addComponents(grid);
