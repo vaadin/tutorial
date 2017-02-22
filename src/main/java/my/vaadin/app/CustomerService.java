@@ -1,7 +1,7 @@
 package my.vaadin.app;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -176,10 +176,8 @@ public class CustomerService {
 				c.setLastName(split[1]);
 				c.setEmail(split[0].toLowerCase() + "@" + split[1].toLowerCase() + ".com");
 				c.setStatus(CustomerStatus.values()[r.nextInt(CustomerStatus.values().length)]);
-				Calendar cal = Calendar.getInstance();
-				int daysOld = 0 - r.nextInt(365 * 15 + 365 * 60);
-				cal.add(Calendar.DAY_OF_MONTH, daysOld);
-				c.setBirthDate(cal.getTime());
+                int daysOld = 0 - r.nextInt(365 * 15 + 365 * 60);
+                c.setBirthDate(LocalDate.now().plusDays(daysOld));
 				save(c);
 			}
 		}
