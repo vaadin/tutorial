@@ -1,8 +1,7 @@
-package my.vaadin.app;
+package com.vaadin.starter.skeleton.backend;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * A entity object, like in any other Java application. In a typical real world
@@ -19,7 +18,7 @@ public class Customer implements Serializable, Cloneable {
 
 	private LocalDate birthDate;
 
-	private CustomerStatus status;
+	private com.vaadin.starter.skeleton.backend.CustomerStatus status;
 
 	private String email = "";
 
@@ -43,8 +42,7 @@ public class Customer implements Serializable, Cloneable {
 	/**
 	 * Set the value of email
 	 *
-	 * @param email
-	 *            new value of email
+	 * @param email new value of email
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -62,8 +60,7 @@ public class Customer implements Serializable, Cloneable {
 	/**
 	 * Set the value of status
 	 *
-	 * @param status
-	 *            new value of status
+	 * @param status new value of status
 	 */
 	public void setStatus(CustomerStatus status) {
 		this.status = status;
@@ -81,8 +78,7 @@ public class Customer implements Serializable, Cloneable {
 	/**
 	 * Set the value of birthDate
 	 *
-	 * @param birthDate
-	 *            new value of birthDate
+	 * @param birthDate new value of birthDate
 	 */
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
@@ -100,8 +96,7 @@ public class Customer implements Serializable, Cloneable {
 	/**
 	 * Set the value of lastName
 	 *
-	 * @param lastName
-	 *            new value of lastName
+	 * @param lastName new value of lastName
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
@@ -119,8 +114,7 @@ public class Customer implements Serializable, Cloneable {
 	/**
 	 * Set the value of firstName
 	 *
-	 * @param firstName
-	 *            new value of firstName
+	 * @param firstName new value of firstName
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;

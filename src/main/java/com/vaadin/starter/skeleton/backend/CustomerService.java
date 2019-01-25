@@ -1,6 +1,5 @@
-package my.vaadin.app;
+package com.vaadin.starter.skeleton.backend;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -174,13 +173,9 @@ public class CustomerService {
 				Customer c = new Customer();
 				c.setFirstName(split[0]);
 				c.setLastName(split[1]);
-				c.setEmail(split[0].toLowerCase() + "@" + split[1].toLowerCase() + ".com");
 				c.setStatus(CustomerStatus.values()[r.nextInt(CustomerStatus.values().length)]);
-                int daysOld = 0 - r.nextInt(365 * 15 + 365 * 60);
-                c.setBirthDate(LocalDate.now().plusDays(daysOld));
 				save(c);
 			}
 		}
 	}
-
 }
