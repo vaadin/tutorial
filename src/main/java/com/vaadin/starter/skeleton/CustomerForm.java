@@ -24,7 +24,6 @@ public class CustomerForm extends FormLayout {
 
     public CustomerForm(MainView mainView) {
 		this.mainView = mainView;
-        add(firstName, lastName, status);
         status.setItems(CustomerStatus.values());
         binder.bindInstanceFields(this);
         HorizontalLayout buttons = new HorizontalLayout(save, delete);
