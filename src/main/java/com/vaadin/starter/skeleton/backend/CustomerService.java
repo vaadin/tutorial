@@ -1,5 +1,6 @@
 package com.vaadin.starter.skeleton.backend;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -174,6 +175,7 @@ public class CustomerService {
 				c.setFirstName(split[0]);
 				c.setLastName(split[1]);
 				c.setStatus(CustomerStatus.values()[r.nextInt(CustomerStatus.values().length)]);
+				c.setBirthDate(LocalDate.now().minusDays(r.nextInt(365*100)));
 				save(c);
 			}
 		}
