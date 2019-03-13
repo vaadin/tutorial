@@ -1,4 +1,4 @@
-package com.vaadin.starter.skeleton.backend;
+package com.vaadin.example;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

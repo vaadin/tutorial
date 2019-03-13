@@ -1,4 +1,4 @@
-package com.vaadin.starter.skeleton;
+package com.vaadin.example;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -8,10 +8,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
-import com.vaadin.starter.skeleton.backend.Customer;
-import com.vaadin.starter.skeleton.backend.CustomerService;
+import com.vaadin.flow.server.PWA;
 
 @Route("")
+@PWA(name = "Project Base for Vaadin Flow", shortName = "Project Base")
 public class MainView extends VerticalLayout {
 
     private CustomerService service = CustomerService.getInstance();
@@ -20,40 +20,35 @@ public class MainView extends VerticalLayout {
     private CustomerForm form = new CustomerForm(this);
 
     public MainView() {
-
         filterText.setPlaceholder("Filter by name...");
+        filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.EAGER);
         filterText.addValueChangeListener(e -> updateList());
-
-        Button clearFilterTextBtn = new Button(VaadinIcon.CLOSE_CIRCLE.create());
-        clearFilterTextBtn.addClickListener(e -> filterText.clear());
-        HorizontalLayout filtering = new HorizontalLayout(filterText, clearFilterTextBtn);
 
         Button addCustomerBtn = new Button("Add new customer");
         addCustomerBtn.addClickListener(e -> {
             grid.asSingleSelect().clear();
             form.setCustomer(new Customer());
         });
-        HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
 
-        // limit and define the order of properties shown by Grid
+        HorizontalLayout toolbar = new HorizontalLayout(filterText,
+                addCustomerBtn);
+
         grid.setColumns("firstName", "lastName", "status");
 
-        HorizontalLayout main = new HorizontalLayout(grid, form);
-        main.setSizeFull();
+        HorizontalLayout mainContent = new HorizontalLayout(grid, form);
+        mainContent.setSizeFull();
         grid.setSizeFull();
 
-        add(toolbar, main);
+        add(toolbar, mainContent);
 
-        // make layout use full height (and grid expand to consume it)
         setSizeFull();
 
         updateList();
+        form.setCustomer(null);
 
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            form.setCustomer(event.getValue());
-        });
-
+        grid.asSingleSelect().addValueChangeListener(event ->
+                form.setCustomer(grid.asSingleSelect().getValue()));
     }
 
     public void updateList() {

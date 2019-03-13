@@ -1,4 +1,4 @@
-package com.vaadin.starter.skeleton.backend;
+package com.vaadin.example;
 
 import java.io.Serializable;
 import java.time.LocalDate;
