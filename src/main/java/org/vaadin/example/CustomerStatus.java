@@ -1,4 +1,4 @@
-package com.vaadin.example;
+package org.vaadin.example;
 
 public enum CustomerStatus {
     ImportedLead, NotContacted, Contacted, Customer, ClosedLost
