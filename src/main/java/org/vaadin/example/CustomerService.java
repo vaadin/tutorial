@@ -1,4 +1,4 @@
-package com.vaadin.example;
+package org.vaadin.example;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
