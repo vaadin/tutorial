@@ -1,4 +1,6 @@
-Vaadin Tutorial application
+**Please visit [Building Modern Web Apps with Spring Boot and Vaadin](https://vaadin.com/learn/tutorials/modern-web-apps-with-spring-boot-and-vaadin)** for a tutorial on Vaadin 14.
+
+Vaadin 8 tutorial application
 ==============
 
 **This repository contains the source code of the application built in [Vaadin 8 tutorial](https://vaadin.com/docs/v8/framework/tutorial.html).**
