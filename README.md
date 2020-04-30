@@ -1,7 +1,7 @@
 Vaadin Tutorial application
 ==============
 
-**This repository contains the source code of the application built in [Vaadin Framework tutorial](http://vaadin.com/tutorial).**
+**This repository contains the source code of the application built in [Vaadin 8 tutorial](https://vaadin.com/docs/v8/framework/tutorial.html).**
 
 If you are new to Maven, read [these instructions](https://vaadin.com/blog/-/blogs/the-maven-essentials-for-the-impatient-developer) to get your project properly imported into Eclipse or your IDE of choice.
 
