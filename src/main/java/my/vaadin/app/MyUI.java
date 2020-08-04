@@ -63,6 +63,9 @@ public class MyUI extends UI {
         updateList();
 
         setContent(layout);
+        
+        grid.asSingleSelect().addValueChangeListener(event ->
+        		form.setCustomer(grid.asSingleSelect().getValue()));
     }
 
     public void updateList() {
