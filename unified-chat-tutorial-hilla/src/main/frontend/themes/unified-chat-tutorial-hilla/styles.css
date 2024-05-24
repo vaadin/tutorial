@@ -1,0 +1,17 @@
+.lobby-view .channel:hover {
+    background-color: var(--lumo-contrast-5pct);
+}
+
+vaadin-message {
+    margin: var(--lumo-space-s);
+    border-radius: var(--lumo-border-radius-m);
+}
+
+vaadin-message[theme~="current-user"] {
+    background-color: var(--lumo-contrast-5pct);
+}
+
+vaadin-message-input {
+    padding: 0;
+    overflow: visible;
+}
