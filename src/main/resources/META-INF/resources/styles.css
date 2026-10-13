@@ -1,0 +1,20 @@
+/* Add your styles here */
+
+.app-logo {
+    border-radius: min(40%, var(--vaadin-radius-m));
+    margin-inline-start: var(--vaadin-padding-inline-container);
+}
+
+.app-name {
+    font-weight: var(--aura-font-weight-semibold);
+    font-size: var(--aura-font-size-l);
+}
+
+.view-title h1 {
+    font-size: var(--aura-font-size-l);
+    font-weight: var(--aura-font-weight-semibold);
+}
+
+.view-title vaadin-drawer-toggle {
+    margin: 0;
+}
