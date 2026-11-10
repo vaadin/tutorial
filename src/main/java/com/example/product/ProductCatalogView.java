@@ -1,5 +1,6 @@
 package com.example.product;
 
+import com.example.base.ui.ViewTitle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
@@ -11,17 +12,23 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.OptimisticLockingFailureException;
 
-@Route("")
+@Route("products")
+@RouteAlias("")
 @PageTitle("Product Catalog")
+@Menu(order = 1, icon = "vaadin:package")
 class ProductCatalogView extends MasterDetailLayout {
 
     ProductCatalogView(ProductCatalogService service) {
         // Create components
+        var title = new ViewTitle("Product Catalog");
+
         var searchField = new TextField();
         searchField.setPlaceholder("Search");
         searchField.setPrefixComponent(VaadinIcon.SEARCH.create());
@@ -89,7 +96,8 @@ class ProductCatalogView extends MasterDetailLayout {
 
         var toolbar = new HorizontalLayout();
         toolbar.setWidthFull();
-        toolbar.addToStart(searchField);
+        toolbar.setWrap(true);
+        toolbar.addToStart(title, searchField);
         toolbar.addToEnd(addButton);
 
         var listLayout = new VerticalLayout(toolbar, grid);
