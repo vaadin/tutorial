@@ -1,6 +1,6 @@
-# Vaadin Tutorial: Sort & Filter
+# Vaadin Tutorial: Show Details
 
-This branch holds the application of the [Vaadin tutorial](https://vaadin.com/docs/latest/getting-started/tutorial) as it is at the end of the [Sort & Filter](https://vaadin.com/docs/latest/getting-started/tutorial/sort-filter) step. To continue the tutorial from here, follow the [Show Details](https://vaadin.com/docs/latest/getting-started/tutorial/show-details) step. The [`step/show-details`](https://github.com/vaadin/tutorial/tree/step/show-details) branch holds the result.
+This branch holds the application of the [Vaadin tutorial](https://vaadin.com/docs/latest/getting-started/tutorial) as it is at the end of the [Show Details](https://vaadin.com/docs/latest/getting-started/tutorial/show-details) step. To continue the tutorial from here, follow the [Edit Details](https://vaadin.com/docs/latest/getting-started/tutorial/edit-details) step. The [`step/edit-details`](https://github.com/vaadin/tutorial/tree/step/edit-details) branch holds the result.
 
 To run the application, you need a Java Development Kit (JDK), version 21 or newer. Start the application with `./mvnw` (`mvnw` on Windows), and open http://localhost:8080 in your browser. To build the application for production and run its tests, run `./mvnw verify`.
 
