@@ -36,6 +36,22 @@ class ProductDetails {
     @DecimalMin("0") @DecimalMax("100")
     private BigDecimal discount;
 
+    public ProductDetails() {
+    }
+
+    public ProductDetails(ProductDetails original) {
+        this.productId = original.productId;
+        this.version = original.version;
+        this.name = original.name;
+        this.description = original.description;
+        this.category = original.category;
+        this.brand = original.brand;
+        this.sku = original.sku;
+        this.releaseDate = original.releaseDate;
+        this.price = original.price;
+        this.discount = original.discount;
+    }
+
     public Long getProductId() {
         return productId;
     }

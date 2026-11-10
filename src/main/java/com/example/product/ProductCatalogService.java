@@ -34,9 +34,13 @@ class ProductCatalogService {
         return productDetailsRepository.findById(id);
     }
 
+    public Optional<ProductCatalogItem> findItemById(Long id) {
+        return productCatalogItemRepository.findById(id);
+    }
+
     @Transactional
     public ProductDetails save(@Valid ProductDetails productDetails) {
-        return productDetailsRepository.save(productDetails);
+        return productDetailsRepository.save(new ProductDetails(productDetails));
     }
 
     @Transactional
