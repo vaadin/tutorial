@@ -1,0 +1,144 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Every Monday, to pick up changes to the tutorial
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+env:
+  # The branch of vaadin/docs to generate the steps from. Use the branch of
+  # https://vaadin.com/docs/latest, so that the code matches the tutorial that
+  # most readers follow.
+  DOCS_REF: v25.3
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+      - run: ./mvnw -B -ntp verify
+
+  generate:
+    name: Generate steps
+    runs-on: ubuntu-latest
+    outputs:
+      steps: ${{ steps.generate.outputs.steps }}
+      docs-commit: ${{ steps.generate.outputs.docs-commit }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: vaadin/docs
+          ref: ${{ env.DOCS_REF }}
+          path: build/docs
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /articles/_vaadin-version.adoc
+            /articles/getting-started/tutorial/
+            /src/main/resources/META-INF/resources/vaadin/tutorial/
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Generate steps
+        id: generate
+        run: |
+          java .github/steps/GenerateSteps.java build/docs build/steps
+          echo "steps=$(cut -f1 build/steps/steps.tsv | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+          echo "docs-commit=$(git -C build/docs rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      # The artifact would lose the executable bit of mvnw without the tar
+      - run: tar -cf build/steps.tar -C build steps
+      - uses: actions/upload-artifact@v7
+        with:
+          name: steps
+          path: build/steps.tar
+
+  check-main:
+    name: Check that main matches the last step
+    needs: generate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: steps
+          path: build
+      - run: tar -xf build/steps.tar -C build
+      - name: Compare main with the last step
+        run: |
+          last=$(tail -n 1 build/steps/steps.tsv | cut -f1)
+          export GIT_INDEX_FILE=$RUNNER_TEMP/index
+          git -c core.autocrlf=false --work-tree="build/steps/$last" add --all
+          if ! git diff --cached --exit-code HEAD -- . ':!README.md' ':!.github'; then
+            echo "::error::main doesn't match the $last step of the tutorial. See Maintenance in README.md."
+            exit 1
+          fi
+      - name: Check that the README lists every step branch
+        run: |
+          status=0
+          while IFS=$'\t' read -r page title; do
+            if ! grep -q "step/$page" README.md; then
+              echo "::error::README.md doesn't mention the step/$page branch of the $title step."
+              status=1
+            fi
+          done < build/steps/steps.tsv
+          exit $status
+
+  verify:
+    name: Verify ${{ matrix.step }}
+    needs: generate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        step: ${{ fromJSON(needs.generate.outputs.steps) }}
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: steps
+      - run: tar -xf steps.tar
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+          cache-dependency-path: steps/${{ matrix.step }}/pom.xml
+      - run: ./mvnw -B -ntp verify
+        working-directory: steps/${{ matrix.step }}
+
+  publish:
+    name: Publish step branches
+    needs: [generate, verify]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency: publish-steps
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: steps
+          path: build
+      - run: tar -xf build/steps.tar -C build
+      - name: Commit and push the steps that changed
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          DOCS_COMMIT: ${{ needs.generate.outputs.docs-commit }}
+        run: .github/steps/commit-steps.sh build/steps --push
