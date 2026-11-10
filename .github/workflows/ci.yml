@@ -83,7 +83,7 @@ jobs:
           export GIT_INDEX_FILE=$RUNNER_TEMP/index
           git -c core.autocrlf=false --work-tree="build/steps/$last" add --all
           if ! git diff --cached --exit-code HEAD -- . ':!README.md' ':!.github'; then
-            echo "::error::main doesn't match the $last step of the tutorial. See Maintenance in README.md."
+            echo "::error::This doesn't match the $last step of the tutorial. On main, CI opens a pull request from the update-main branch to fix that. See Maintenance in README.md."
             exit 1
           fi
       - name: Check that the README lists every step branch
@@ -142,3 +142,32 @@ jobs:
           GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           DOCS_COMMIT: ${{ needs.generate.outputs.docs-commit }}
         run: .github/steps/commit-steps.sh build/steps --push
+
+  update-main:
+    name: Open a pull request to update main
+    needs: [generate, verify]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency: update-main
+    permissions:
+      contents: write
+      pull-requests: write
+      # To run CI on the pull request's branch, since GitHub doesn't run
+      # workflows for pull requests that a workflow opens
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: steps
+          path: build
+      - run: tar -xf build/steps.tar -C build
+      - name: Open or update the pull request if main doesn't match the last step
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          DOCS_COMMIT: ${{ needs.generate.outputs.docs-commit }}
+        run: .github/steps/update-main.sh build/steps --push

@@ -27,7 +27,7 @@ The application is a Spring Boot application, with an in-memory H2 database and 
 - [`com.example.product`](src/main/java/com/example/product) holds the product catalog: the view, its form and dialog, the application service, and the repositories. The classes are package-private, since nothing outside the package uses them.
 - [`com.example.base.ui`](src/main/java/com/example/base/ui) holds the main layout and the title bar that the views share.
 - [`com.example.order`](src/main/java/com/example/order) holds the placeholder view for orders.
-- [`src/test/java/com/example/product`](src/test/java/com/example/product) holds a test of the service, and browserless tests of the view.
+- [`src/test/java/com/example/product`](src/test/java/com/example/product) holds a test of the service, and browserless tests of the view. The browserless application context that the view tests use is configured in [`BrowserlessContextConfiguration`](src/test/java/com/example/BrowserlessContextConfiguration.java).
 - [`schema.sql`](src/main/resources/schema.sql) and [`data.sql`](src/main/resources/data.sql) create the database and its sample data when the application starts.
 
 ## Step Branches
@@ -62,10 +62,15 @@ The [CI workflow](.github/workflows/ci.yml) runs on every push to `main`, on eve
 
 - builds `main` and runs its tests,
 - generates the steps from the branch of vaadin/docs in `DOCS_REF`, and builds and tests each of them with `./mvnw verify`,
-- checks that `main` matches the last step, except for this README and the `.github` directory, and that this README lists every step branch, and
-- on `main`, commits each step that changed on top of the previous step, and force-pushes its branch, and the branches of the steps after it.
+- checks that `main` matches the last step, except for this README and the `.github` directory, and that this README lists every step branch,
+- on `main`, commits each step that changed on top of the previous step, and force-pushes its branch, and the branches of the steps after it, and
+- on `main`, opens a pull request from the `update-main` branch that updates `main` to the last step, if they don't match.
 
-To fix the code, fix the tutorial in vaadin/docs. The next CI run on `main` updates the step branches. If the last step changed, the check of `main` fails until you update `main` to match. To do that, generate the steps from the branch in `DOCS_REF`, here `v25.3`:
+To fix the code, fix the tutorial in vaadin/docs. The next CI run on `main` updates the step branches. If the last step changed, it also opens a pull request that updates `main`, or updates the pull request that is already open. Review and merge it. Until then, the check of `main` fails.
+
+The pull request replaces every file except `README.md` and the `.github` directory, and removes the files that the last step doesn't have. If a step was added to the tutorial, or removed from it, update the table of step branches in this README in the same pull request. Its check fails until you do. GitHub doesn't run workflows for pull requests that a workflow opens, so CI runs on the `update-main` branch through a manual workflow run, whose checks appear on the pull request. If `main` matches the last step again, for example because someone updated it by hand, CI closes the pull request.
+
+To generate the steps yourself, for example to see what a change to the tutorial does, use the branch of vaadin/docs in `DOCS_REF`, here `v25.3`:
 
 ```bash
 git clone --depth 1 --branch v25.3 --filter=blob:none --sparse https://github.com/vaadin/docs.git ../docs
@@ -73,9 +78,9 @@ git -C ../docs sparse-checkout set --no-cone /articles/_vaadin-version.adoc /art
 java .github/steps/GenerateSteps.java ../docs ../steps
 ```
 
-Then copy the files from `../steps/add-tests` over the files of this repository, except for `README.md`, and commit them. Add them with `git -c core.autocrlf=false add`, so that `mvnw.cmd` keeps the Windows line endings that it has in the project skeleton.
+Then `.github/steps/update-main.sh ../steps` shows how `main` differs from the last step, and `.github/steps/commit-steps.sh ../steps` shows which step branches would change. Neither pushes anything unless you add `--push`.
 
-When a new Vaadin version becomes the one at https://vaadin.com/docs/latest, set `DOCS_REF` in the CI workflow to the branch of vaadin/docs for that version, such as `v25.4`, and update `main` the same way.
+When a new Vaadin version becomes the one at https://vaadin.com/docs/latest, set `DOCS_REF` in the CI workflow to the branch of vaadin/docs for that version, such as `v25.4`. The next CI run on `main` then opens a pull request that updates `main` to it.
 
 ## Other Versions
 
