@@ -51,6 +51,9 @@ public class GenerateSteps {
     static final Pattern GROUP_ID = Pattern.compile("<groupId>([^<]+)</groupId>");
     static final Pattern ARTIFACT_ID = Pattern.compile("<artifactId>([^<]+)</artifactId>");
     static final Pattern PACKAGE = Pattern.compile("(?m)^package ([\\w.]+);");
+    // Packages of the test-scoped dependencies. A class that imports them only compiles in the test sources.
+    static final Pattern TEST_IMPORT = Pattern.compile("(?m)^import (static )?(org\\.junit|org\\.mockito|org\\.assertj|org\\.hamcrest"
+            + "|org\\.springframework\\.boot\\.test|org\\.springframework\\.test|com\\.vaadin\\.browserless|com\\.vaadin\\.testbench)\\.");
 
     // The Set Up Project step tells the reader to save the SQL files in this directory.
     static final String SQL_DIR = "src/main/resources";
@@ -368,8 +371,9 @@ public class GenerateSteps {
         return listings;
     }
 
-    // A Java class goes in the directory of its package, and a test in the test sources. Any
-    // other file replaces the only file of the same name in the project.
+    // A Java class goes in the directory of its package, in the test sources if it uses a test
+    // library, such as a test or the browserless application context of the tests. Any other file
+    // replaces the only file of the same name in the project.
     static Path targetFile(Listing listing, Path project) throws IOException {
         if (listing.fileName().endsWith(".java")) {
             var className = listing.fileName().replaceFirst("\\.java$", "");
@@ -380,7 +384,7 @@ public class GenerateSteps {
             if (!packageName.find()) {
                 throw new IllegalStateException(listing.fileName() + " has no package");
             }
-            var sources = listing.code().contains("import org.junit.") ? "src/test/java" : "src/main/java";
+            var sources = TEST_IMPORT.matcher(listing.code()).find() ? "src/test/java" : "src/main/java";
             return project.resolve(sources).resolve(packageName.group(1).replace('.', '/')).resolve(listing.fileName());
         }
         try (Stream<Path> files = Files.walk(project)) {
