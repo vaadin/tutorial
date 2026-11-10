@@ -1,6 +1,6 @@
-# Vaadin Tutorial: Set Up Project
+# Vaadin Tutorial: List Data
 
-This branch holds the application of the [Vaadin tutorial](https://vaadin.com/docs/latest/getting-started/tutorial) as it is at the end of the [Set Up Project](https://vaadin.com/docs/latest/getting-started/tutorial/setup) step. To continue the tutorial from here, follow the [List Data](https://vaadin.com/docs/latest/getting-started/tutorial/list-data) step. The [`step/list-data`](https://github.com/vaadin/tutorial/tree/step/list-data) branch holds the result.
+This branch holds the application of the [Vaadin tutorial](https://vaadin.com/docs/latest/getting-started/tutorial) as it is at the end of the [List Data](https://vaadin.com/docs/latest/getting-started/tutorial/list-data) step. To continue the tutorial from here, follow the [Sort & Filter](https://vaadin.com/docs/latest/getting-started/tutorial/sort-filter) step. The [`step/sort-filter`](https://github.com/vaadin/tutorial/tree/step/sort-filter) branch holds the result.
 
 To run the application, you need a Java Development Kit (JDK), version 21 or newer. Start the application with `./mvnw` (`mvnw` on Windows), and open http://localhost:8080 in your browser. To build the application for production and run its tests, run `./mvnw verify`.
 
