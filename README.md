@@ -27,7 +27,7 @@ The application is a Spring Boot application, with an in-memory H2 database and 
 - [`com.example.product`](src/main/java/com/example/product) holds the product catalog: the view, its form and dialog, the application service, and the repositories. The classes are package-private, since nothing outside the package uses them.
 - [`com.example.base.ui`](src/main/java/com/example/base/ui) holds the main layout and the title bar that the views share.
 - [`com.example.order`](src/main/java/com/example/order) holds the placeholder view for orders.
-- [`src/test/java/com/example/product`](src/test/java/com/example/product) holds a test of the service, and browserless tests of the view.
+- [`src/test/java/com/example/product`](src/test/java/com/example/product) holds a test of the service, and browserless tests of the view. The browserless application context that the view tests use is configured in [`BrowserlessContextConfiguration`](src/test/java/com/example/BrowserlessContextConfiguration.java).
 - [`schema.sql`](src/main/resources/schema.sql) and [`data.sql`](src/main/resources/data.sql) create the database and its sample data when the application starts.
 
 ## Step Branches
