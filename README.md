@@ -1,6 +1,6 @@
-# Vaadin Tutorial: Deep Link
+# Vaadin Tutorial: Add Tests
 
-This branch holds the application of the [Vaadin tutorial](https://vaadin.com/docs/latest/getting-started/tutorial) as it is at the end of the [Deep Link](https://vaadin.com/docs/latest/getting-started/tutorial/deep-link) step. To continue the tutorial from here, follow the [Add Tests](https://vaadin.com/docs/latest/getting-started/tutorial/add-tests) step. The [`step/add-tests`](https://github.com/vaadin/tutorial/tree/step/add-tests) branch holds the result.
+This branch holds the application of the [Vaadin tutorial](https://vaadin.com/docs/latest/getting-started/tutorial) as it is at the end of the [Add Tests](https://vaadin.com/docs/latest/getting-started/tutorial/add-tests) step. This is the last step, so this branch holds the finished application. The [`main`](https://github.com/vaadin/tutorial) branch has the same code.
 
 To run the application, you need a Java Development Kit (JDK), version 21 or newer. Start the application with `./mvnw` (`mvnw` on Windows), and open http://localhost:8080 in your browser. To build the application for production and run its tests, run `./mvnw verify`.
 
