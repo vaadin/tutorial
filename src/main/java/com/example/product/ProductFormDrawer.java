@@ -1,6 +1,5 @@
 package com.example.product;
 
-import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -9,7 +8,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-class ProductFormDrawer extends Composite<VerticalLayout> {
+class ProductFormDrawer extends VerticalLayout {
 
     @FunctionalInterface
     interface SaveCallback {
@@ -46,11 +45,10 @@ class ProductFormDrawer extends Composite<VerticalLayout> {
         var deleteButton = new Button("Delete", e -> delete());
         deleteButton.addThemeVariants(ButtonVariant.ERROR);
 
-        var layout = getContent();
-        layout.add(header);
-        layout.add(new Scroller(form));
-        layout.add(new HorizontalLayout(saveButton, deleteButton));
-        layout.setHeightFull();
+        add(header);
+        add(new Scroller(form));
+        add(new HorizontalLayout(saveButton, deleteButton));
+        setHeightFull();
     }
 
     public void setProductDetails(ProductDetails productDetails) {
@@ -70,19 +68,23 @@ class ProductFormDrawer extends Composite<VerticalLayout> {
     }
 
     private void delete() {
-        var dialog = new ConfirmDialog();
-        dialog.setHeader("Delete Product");
-        dialog.setText("Are you sure you want to permanently delete this product?");
-        dialog.setCancelable(true);
-        dialog.setConfirmText("Delete");
-        dialog.setConfirmButtonTheme("error primary");
-        dialog.addConfirmListener(event -> {
+        new DeleteProductDialog(() -> {
             try {
                 deleteCallback.delete(productDetails);
             } catch (RuntimeException e) {
                 errorCallback.handleException(e);
             }
-        });
-        dialog.open();
+        }).open();
+    }
+
+    static class DeleteProductDialog extends ConfirmDialog {
+
+        DeleteProductDialog(Runnable onDelete) {
+            super("Delete Product",
+                "Are you sure you want to permanently delete this product?",
+                "Delete", e -> onDelete.run());
+            setCancelable(true);
+            setConfirmButtonTheme("error primary");
+        }
     }
 }
