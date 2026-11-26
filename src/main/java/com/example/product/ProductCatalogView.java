@@ -1,6 +1,7 @@
 package com.example.product;
 
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.masterdetaillayout.MasterDetailLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -9,9 +10,10 @@ import com.vaadin.flow.router.Route;
 
 @Route("")
 @PageTitle("Product Catalog")
-class ProductCatalogView extends VerticalLayout {
+class ProductCatalogView extends MasterDetailLayout {
 
-    ProductCatalogView(ProductCatalogItemRepository repository) {
+    ProductCatalogView(ProductCatalogItemRepository repository,
+                       ProductDetailsRepository productDetailsRepository) {
         // Create components
         var searchField = new SearchField();
 
@@ -22,14 +24,31 @@ class ProductCatalogView extends VerticalLayout {
             .getContent()
         );
 
+        var drawer = new ProductFormDrawer();
+
         searchField.addValueChangeListener(e ->
                 grid.getDataProvider().refreshAll());
 
+        grid.addSelectionListener(e -> {
+            var productDetails = e.getFirstSelectedItem()
+                .flatMap(item -> productDetailsRepository
+                    .findById(item.productId()));
+            productDetails.ifPresent(drawer::setProductDetails);
+            setDetail(productDetails.isPresent() ? drawer : null);
+        });
+        addBackdropClickListener(e -> grid.deselectAll());
+        addDetailEscapePressListener(e -> grid.deselectAll());
+
         // Layout view
         setSizeFull();
+        setDetailSize("300px");
+        setExpandMaster(true);
+
+        var listLayout = new VerticalLayout(searchField, grid);
+        listLayout.setSizeFull();
         grid.setSizeFull();
-        add(searchField);
-        add(grid);
+
+        setMaster(listLayout);
     }
 
     static class SearchField extends TextField {
