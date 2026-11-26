@@ -7,15 +7,20 @@ class ProductCatalogGrid extends Grid<ProductCatalogItem> {
 
     ProductCatalogGrid() {
         addColumn(ProductCatalogItem::name)
-            .setHeader("Name");
+            .setHeader("Name")
+            .setSortProperty(ProductCatalogItem.SORT_PROPERTY_NAME);
         addColumn(ProductCatalogItem::price)
             .setHeader("Price")
-            .setTextAlign(ColumnTextAlign.END);
+            .setTextAlign(ColumnTextAlign.END)
+            .setSortProperty(ProductCatalogItem.SORT_PROPERTY_PRICE);
         addColumn(ProductCatalogItem::description)
-            .setHeader("Description");
+            .setHeader("Description")
+            .setSortProperty(ProductCatalogItem.SORT_PROPERTY_DESCRIPTION);
         addColumn(ProductCatalogItem::category)
-            .setHeader("Category");
+            .setHeader("Category")
+            .setSortProperty(ProductCatalogItem.SORT_PROPERTY_CATEGORY);
         addColumn(ProductCatalogItem::brand)
-            .setHeader("Brand");
+            .setHeader("Brand")
+            .setSortProperty(ProductCatalogItem.SORT_PROPERTY_BRAND);
     }
 }
