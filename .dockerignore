@@ -1,0 +1,12 @@
+# The Docker build runs the Maven build from scratch, so it doesn't need
+# local build output, dependencies, or IDE files
+target/
+node_modules/
+.git
+.idea/
+.vscode/
+.settings
+.project
+.classpath
+*.iml
+.DS_Store
