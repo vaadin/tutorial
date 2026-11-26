@@ -1,14 +1,17 @@
 package com.example.product;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.masterdetaillayout.MasterDetailLayout;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 @Route("")
@@ -46,12 +49,29 @@ class ProductCatalogView extends MasterDetailLayout {
         addBackdropClickListener(e -> grid.deselectAll());
         addDetailEscapePressListener(e -> grid.deselectAll());
 
+        var addButton = new Button("Add Product", e ->
+            new AddProductDialog(
+                productDetails -> {
+                    var saved = service.save(productDetails);
+                    grid.getDataProvider().refreshAll();
+                    service.findItemById(saved.getProductId())
+                           .ifPresent(grid::select);
+                },
+                this::handleException
+            ).open()
+        );
+
         // Layout view
         setSizeFull();
         setDetailSize("300px");
         setExpandMaster(true);
 
-        var listLayout = new VerticalLayout(searchField, grid);
+        var toolbar = new HorizontalLayout();
+        toolbar.setWidthFull();
+        toolbar.addToStart(searchField);
+        toolbar.addToEnd(addButton);
+
+        var listLayout = new VerticalLayout(toolbar, grid);
         listLayout.setSizeFull();
         grid.setSizeFull();
 
@@ -62,6 +82,9 @@ class ProductCatalogView extends MasterDetailLayout {
         if (exception instanceof OptimisticLockingFailureException) {
             new WarningNotification("Another user has edited the same product. "
                 + "Please refresh and try again.").open();
+        } else if (exception instanceof DuplicateKeyException) {
+            new WarningNotification(
+                "The SKU is already in use. Please enter another one.").open();
         } else {
             // Delegate to Vaadin's default error handler
             throw exception;
