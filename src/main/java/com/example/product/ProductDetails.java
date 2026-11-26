@@ -1,5 +1,11 @@
 package com.example.product;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
@@ -14,13 +20,20 @@ class ProductDetails {
     private Long productId;
     @Version
     private Long version;
+    @NotBlank @Size(max = 100)
     private String name;
+    @NotBlank @Size(max = 500)
     private String description;
+    @NotBlank @Size(max = 100)
     private String category;
+    @Size(max = 100)
     private String brand;
+    @NotBlank @Size(max = 50)
     private String sku;
     private LocalDate releaseDate;
+    @NotNull @PositiveOrZero
     private BigDecimal price;
+    @DecimalMin("0") @DecimalMax("100")
     private BigDecimal discount;
 
     public Long getProductId() {
